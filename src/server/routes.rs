@@ -123,7 +123,7 @@ pub async fn handle_anthropic_messages(
 }
 
 pub async fn handle_ollama_chat(
-    State(state): State<AppState>,
+    State(_state): State<AppState>,
     Json(body): Json<Value>,
 ) -> Result<Json<Value>, RouterError> {
     let mut req = parse_ollama_request(body)?;
