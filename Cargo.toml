@@ -1,0 +1,33 @@
+[package]
+name = "igniterouter-rs"
+version = "0.1.0"
+edition = "2021"
+authors = ["Saksham Agarwal <sakshamagarwalm2@gmail.com>"]
+description = "Universal, ultra-fast, hybrid (Local GPU + Cloud API) LLM Router & Gateway in Rust"
+license = "MIT"
+
+[dependencies]
+tokio = { version = "1.40", features = ["full"] }
+axum = { version = "0.7", features = ["macros"] }
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+reqwest = { version = "0.12", features = ["json", "stream"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+clap = { version = "4.5", features = ["derive"] }
+dashmap = "6.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+futures-util = "0.3"
+sha2 = "0.10"
+regex = "1.10"
+async-trait = "0.1"
+bytes = "1.7"
+tokio-stream = "0.1"
+serde_yaml = "0.9"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
