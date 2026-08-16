@@ -1,7 +1,7 @@
 /**
  * Partner Service Registry
  *
- * Defines available partner APIs that can be called through ClawRouter's proxy.
+ * Defines available partner APIs that can be called through IgniteRouter's proxy.
  * Partners provide specialized data (Twitter/X, etc.) via x402 micropayments.
  * The same wallet used for LLM calls pays for partner API calls — zero extra setup.
  */

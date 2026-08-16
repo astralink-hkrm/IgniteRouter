@@ -3,7 +3,7 @@ set -e
 set -o pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PLUGIN_DIR="$HOME/.openclaw/extensions/clawrouter"
+PLUGIN_DIR="$HOME/.openclaw/extensions/IgniteRouter"
 CONFIG_PATH="$HOME/.openclaw/openclaw.json"
 WALLET_FILE="$HOME/.openclaw/blockrun/wallet.key"
 WALLET_BACKUP=""
@@ -24,7 +24,7 @@ restore_previous_install() {
 
   if [ "$exit_code" -ne 0 ]; then
     echo ""
-    echo "✗ Reinstall failed. Restoring previous ClawRouter install..."
+    echo "✗ Reinstall failed. Restoring previous IgniteRouter install..."
 
     if [ -d "$PLUGIN_DIR" ] && [ "$PLUGIN_DIR" != "$PLUGIN_BACKUP" ]; then
       rm -rf "$PLUGIN_DIR"
@@ -47,7 +47,7 @@ restore_previous_install() {
 run_dependency_install() {
   local plugin_dir="$1"
   local log_file
-  log_file="$(mktemp -t clawrouter-reinstall-npm.XXXXXX.log)"
+  log_file="$(mktemp -t IgniteRouter-reinstall-npm.XXXXXX.log)"
 
   if (cd "$plugin_dir" && npm install --omit=dev >"$log_file" 2>&1); then
     tail -1 "$log_file"
@@ -98,7 +98,7 @@ kill_port_processes() {
   fi
 }
 
-echo "🦞 ClawRouter Reinstall"
+echo "🦞 IgniteRouter Reinstall"
 echo ""
 
 # Pre-flight: fail fast if config is corrupt
@@ -125,7 +125,7 @@ echo ""
 # 0.5 Back up existing install for rollback
 echo "→ Backing up existing install..."
 if [ -d "$PLUGIN_DIR" ]; then
-  PLUGIN_BACKUP="$HOME/.openclaw/blockrun/clawrouter.backup.$(date +%s)"
+  PLUGIN_BACKUP="$HOME/.openclaw/blockrun/IgniteRouter.backup.$(date +%s)"
   mv "$PLUGIN_DIR" "$PLUGIN_BACKUP"
   echo "  ✓ Plugin files staged at: $PLUGIN_BACKUP"
 else
@@ -133,14 +133,14 @@ else
 fi
 
 if [ -f "$CONFIG_PATH" ]; then
-  CONFIG_BACKUP="$CONFIG_PATH.clawrouter-reinstall.$(date +%s).bak"
+  CONFIG_BACKUP="$CONFIG_PATH.IgniteRouter-reinstall.$(date +%s).bak"
   cp "$CONFIG_PATH" "$CONFIG_BACKUP"
   echo "  ✓ Config backed up to: $CONFIG_BACKUP"
 fi
 echo ""
 
 # 1b. Remove Crossmint/lobster extension
-# lobster.cash conflicts with /wallet command — remove it so ClawRouter owns /wallet.
+# lobster.cash conflicts with /wallet command — remove it so IgniteRouter owns /wallet.
 echo "→ Removing Crossmint/lobster extension..."
 LOBSTER_DIR="$HOME/.openclaw/extensions/lobster.cash"
 if [ -d "$LOBSTER_DIR" ]; then
@@ -205,12 +205,12 @@ try {
 }
 
 // Clean plugin entries (all case variants to prevent duplicate plugin warnings)
-for (const key of ['clawrouter', 'ClawRouter', '@blockrun/clawrouter']) {
+for (const key of ['IgniteRouter', 'IgniteRouter', '@blockrun/IgniteRouter']) {
   if (c.plugins?.entries?.[key]) delete c.plugins.entries[key];
   if (c.plugins?.installs?.[key]) delete c.plugins.installs[key];
 }
 
-// Clean plugins.allow — remove clawrouter (will be re-added after install)
+// Clean plugins.allow — remove IgniteRouter (will be re-added after install)
 // and strip any non-bundled plugin names that don't exist (e.g. "wallet" added
 // by an AI agent trying to fix a different problem — causes a warning on every start).
 if (Array.isArray(c.plugins?.allow)) {
@@ -223,7 +223,7 @@ if (Array.isArray(c.plugins?.allow)) {
   ];
   const before = c.plugins.allow.length;
   c.plugins.allow = c.plugins.allow.filter(p => {
-    if (p === 'clawrouter' || p === '@blockrun/clawrouter') return false; // re-added later
+    if (p === 'IgniteRouter' || p === '@blockrun/IgniteRouter') return false; // re-added later
     if (BUNDLED_OPENCLAW_PLUGINS.includes(p)) return true; // known-good bundled plugins
     // Keep entries that look like npm package names (scoped or plain)
     if (p.startsWith('@') || p.includes('/')) return true;
@@ -410,16 +410,16 @@ fi
 # Pre-install cleanup: remove any backup/stage dirs from extensions/ BEFORE
 # openclaw plugins install scans the directory. If they exist during install,
 # OpenClaw writes them into config as duplicate plugins.
-for stale in "$HOME/.openclaw/extensions/clawrouter.backup."* "$HOME/.openclaw/extensions/.openclaw-install-stage-"*; do
+for stale in "$HOME/.openclaw/extensions/IgniteRouter.backup."* "$HOME/.openclaw/extensions/.openclaw-install-stage-"*; do
   [ -d "$stale" ] && rm -rf "$stale"
 done
 
-echo "→ Installing ClawRouter..."
+echo "→ Installing IgniteRouter..."
 # Run with timeout — openclaw plugins install may hang after printing
-# "Installed plugin: clawrouter" in OpenClaw v2026.4.5 (parallel plugin loading).
+# "Installed plugin: IgniteRouter" in OpenClaw v2026.4.5 (parallel plugin loading).
 # 120s is enough for slow connections; the install itself completes in ~30s.
 if command -v timeout >/dev/null 2>&1; then
-  timeout 120 openclaw plugins install @blockrun/clawrouter || {
+  timeout 120 openclaw plugins install @blockrun/IgniteRouter || {
     exit_code=$?
     if [ $exit_code -eq 124 ]; then
       echo "  (install command timed out — this is normal with OpenClaw v2026.4.5)"
@@ -429,7 +429,7 @@ if command -v timeout >/dev/null 2>&1; then
     fi
   }
 else
-  openclaw plugins install @blockrun/clawrouter
+  openclaw plugins install @blockrun/IgniteRouter
 fi
 
 # Install is complete — clear the rollback trap immediately.
@@ -506,9 +506,9 @@ force_install_from_npm() {
   echo "  → Force-fetching v${version} directly from npm registry..."
   local TMPPACK
   TMPPACK=$(mktemp -d)
-  if npm pack "@blockrun/clawrouter@${version}" --pack-destination "$TMPPACK" --prefer-online >/dev/null 2>&1; then
+  if npm pack "@blockrun/IgniteRouter@${version}" --pack-destination "$TMPPACK" --prefer-online >/dev/null 2>&1; then
     local TARBALL
-    TARBALL=$(ls "$TMPPACK"/blockrun-clawrouter-*.tgz 2>/dev/null | head -1)
+    TARBALL=$(ls "$TMPPACK"/blockrun-IgniteRouter-*.tgz 2>/dev/null | head -1)
     if [ -n "$TARBALL" ]; then
       rm -rf "$PLUGIN_DIR"
       mkdir -p "$PLUGIN_DIR"
@@ -525,7 +525,7 @@ force_install_from_npm() {
 
 if [ ! -f "$DIST_PATH" ]; then
   echo "  ⚠️  dist/ files missing — openclaw install may have cached an old version"
-  LATEST_VER=$(npm view @blockrun/clawrouter@latest version 2>/dev/null || echo "")
+  LATEST_VER=$(npm view @blockrun/IgniteRouter@latest version 2>/dev/null || echo "")
   if [ -n "$LATEST_VER" ]; then
     force_install_from_npm "$LATEST_VER" || exit 1
   else
@@ -534,13 +534,13 @@ if [ ! -f "$DIST_PATH" ]; then
   fi
   if [ ! -f "$DIST_PATH" ]; then
     echo "  ❌ Installation failed - dist/index.js still missing"
-    echo "  Please report this issue at https://github.com/BlockRunAI/ClawRouter/issues"
+    echo "  Please report this issue at https://github.com/BlockRunAI/IgniteRouter/issues"
     exit 1
   fi
 else
   # dist/ exists — verify we have the latest version (openclaw may have served cached old version)
   INSTALLED_VER=$(node -e "try{const p=require('$PLUGIN_DIR/package.json');console.log(p.version);}catch{console.log('');}" 2>/dev/null || echo "")
-  LATEST_VER=$(npm view @blockrun/clawrouter@latest version 2>/dev/null || echo "")
+  LATEST_VER=$(npm view @blockrun/IgniteRouter@latest version 2>/dev/null || echo "")
   if [ -n "$LATEST_VER" ] && [ -n "$INSTALLED_VER" ] && [ "$INSTALLED_VER" != "$LATEST_VER" ]; then
     echo "  ⚠️  openclaw installed v${INSTALLED_VER} (cached) but latest is v${LATEST_VER}"
     force_install_from_npm "$LATEST_VER" || true
@@ -548,7 +548,7 @@ else
 fi
 
 INSTALLED_VER=$(node -e "try{const p=require('$PLUGIN_DIR/package.json');console.log(p.version);}catch{console.log('?');}" 2>/dev/null || echo "?")
-echo "  ✓ ClawRouter v${INSTALLED_VER} installed"
+echo "  ✓ IgniteRouter v${INSTALLED_VER} installed"
 
 # 6.1b. Ensure all dependencies are installed (Solana, x402, etc.)
 # openclaw's plugin installer may skip native deps like @solana/kit.
@@ -672,14 +672,14 @@ if (fs.existsSync(configPath)) {
   try {
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
-    // Ensure plugins.allow exists and includes clawrouter
+    // Ensure plugins.allow exists and includes IgniteRouter
     if (!config.plugins) config.plugins = {};
     if (!Array.isArray(config.plugins.allow)) {
       config.plugins.allow = [];
     }
-    if (!config.plugins.allow.includes('clawrouter') && !config.plugins.allow.includes('@blockrun/clawrouter')) {
-      config.plugins.allow.push('clawrouter');
-      console.log('  Added clawrouter to plugins.allow');
+    if (!config.plugins.allow.includes('IgniteRouter') && !config.plugins.allow.includes('@blockrun/IgniteRouter')) {
+      config.plugins.allow.push('IgniteRouter');
+      console.log('  Added IgniteRouter to plugins.allow');
     } else {
       console.log('  Plugin already in allow list');
     }
@@ -747,7 +747,7 @@ fi
 # plugin detection), new ones live in blockrun/. Clean both locations.
 echo "→ Cleaning up stale plugin backups..."
 CLEANED=0
-for backup_dir in "$HOME/.openclaw/extensions/clawrouter.backup."* "$HOME/.openclaw/blockrun/clawrouter.backup."*; do
+for backup_dir in "$HOME/.openclaw/extensions/IgniteRouter.backup."* "$HOME/.openclaw/blockrun/IgniteRouter.backup."*; do
   if [ -d "$backup_dir" ]; then
     rm -rf "$backup_dir"
     CLEANED=$((CLEANED + 1))
@@ -768,7 +768,7 @@ if (!fs.existsSync(configPath)) process.exit(0);
 try {
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
   let changed = false;
-  const isStale = (p) => p.includes('.openclaw-install-stage-') || p.includes('clawrouter.backup.');
+  const isStale = (p) => p.includes('.openclaw-install-stage-') || p.includes('IgniteRouter.backup.');
   // Remove plugins.entries pointing to stale directories
   if (config?.plugins?.entries) {
     for (const [key, val] of Object.entries(config.plugins.entries)) {
@@ -835,7 +835,7 @@ RESTART_OK=false
 if systemctl --user is-active openclaw-gateway.service >/dev/null 2>&1 || \
    systemctl --user is-enabled openclaw-gateway.service >/dev/null 2>&1; then
   if systemctl --user restart openclaw-gateway.service 2>/dev/null; then
-    # Wait up to 15s for ClawRouter proxy port to come up
+    # Wait up to 15s for IgniteRouter proxy port to come up
     for i in $(seq 1 15); do
       sleep 1
       if curl -sf --connect-timeout 1 http://localhost:8402/v1/models >/dev/null 2>&1; then
@@ -844,7 +844,7 @@ if systemctl --user is-active openclaw-gateway.service >/dev/null 2>&1 || \
       fi
     done
     if $RESTART_OK; then
-      echo "  ✓ Gateway restarted — ClawRouter active on port 8402"
+      echo "  ✓ Gateway restarted — IgniteRouter active on port 8402"
     else
       echo "  ⚠ Gateway restarted but port 8402 not yet up (may still be starting)"
       echo "    Check: systemctl --user status openclaw-gateway.service"
@@ -889,9 +889,9 @@ echo "  /imagegen --model dall-e-3 <prompt>          # DALL-E 3"
 echo "  /imagegen --model gpt-image <prompt>         # GPT Image 1"
 echo ""
 echo "CLI commands:"
-echo "  npx @blockrun/clawrouter report            # daily usage report"
-echo "  npx @blockrun/clawrouter report weekly      # weekly report"
-echo "  npx @blockrun/clawrouter report monthly     # monthly report"
-echo "  npx @blockrun/clawrouter doctor             # AI diagnostics"
+echo "  npx @blockrun/IgniteRouter report            # daily usage report"
+echo "  npx @blockrun/IgniteRouter report weekly      # weekly report"
+echo "  npx @blockrun/IgniteRouter report monthly     # monthly report"
+echo "  npx @blockrun/IgniteRouter doctor             # AI diagnostics"
 echo ""
-echo "To uninstall: bash ~/.openclaw/extensions/clawrouter/scripts/uninstall.sh"
+echo "To uninstall: bash ~/.openclaw/extensions/IgniteRouter/scripts/uninstall.sh"

@@ -1,7 +1,7 @@
 {
   "name": "@sakshamagarwalm2/igniterouter",
   "version": "0.12.137",
-  "description": "IgniteRouter - Fork of ClawRouter. Smart LLM router — save 85% on inference costs. 55+ models (11 free), one wallet, x402 micropayments.",
+  "description": "IgniteRouter - Smart LLM router — save 85% on inference costs. 55+ models (11 free), one wallet, x402 micropayments.",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

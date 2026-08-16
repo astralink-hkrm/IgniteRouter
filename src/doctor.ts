@@ -83,7 +83,7 @@ function yellow(text: string): string {
 // Fetch latest published version from npm registry
 async function fetchLatestVersion(): Promise<string | null> {
   try {
-    const res = await fetch("https://registry.npmjs.org/@blockrun/clawrouter/latest", {
+    const res = await fetch("https://registry.npmjs.org/@blockrun/IgniteRouter/latest", {
       signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) return null;
@@ -264,7 +264,7 @@ function identifyIssues(result: DiagnosticResult): string[] {
   }
   if (result.latestVersion && result.latestVersion !== result.version) {
     issues.push(
-      `Outdated version: running v${result.version}, latest is v${result.latestVersion}. Run: curl -fsSL https://blockrun.ai/ClawRouter-update | bash`,
+      `Outdated version: running v${result.version}, latest is v${result.latestVersion}. Run: curl -fsSL https://blockrun.ai/IgniteRouter-update | bash`,
     );
   }
 
@@ -281,7 +281,7 @@ function printDiagnostics(result: DiagnosticResult): void {
     console.log(`  ${red(`Installed: v${result.version} (outdated!)`)}`);
     console.log(`  ${yellow(`Latest:    v${result.latestVersion}`)}`);
     console.log(
-      `  ${yellow(`Update:    curl -fsSL https://blockrun.ai/ClawRouter-update | bash`)}`,
+      `  ${yellow(`Update:    curl -fsSL https://blockrun.ai/IgniteRouter-update | bash`)}`,
     );
   } else if (result.latestVersion) {
     console.log(`  ${green(`v${result.version} (up to date)`)}`);
@@ -413,7 +413,7 @@ async function analyzeWithAI(
         messages: [
           {
             role: "system",
-            content: `You are a technical support expert for BlockRun and ClawRouter.
+            content: `You are a technical support expert for BlockRun and IgniteRouter.
 Analyze the diagnostics and:
 1. Identify the root cause of any issues
 2. Provide specific, actionable fix commands (bash)

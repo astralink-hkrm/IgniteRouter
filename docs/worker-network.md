@@ -2,9 +2,9 @@
 
 > **For Claude implementing this:** Use `superpowers:executing-plans` to implement the tasks section task-by-task.
 
-**Goal:** Let ClawRouter users opt in as worker nodes — poll tasks, execute HTTP checks, earn USDC via x402 micropayments.
+**Goal:** Let IgniteRouter users opt in as worker nodes — poll tasks, execute HTTP checks, earn USDC via x402 micropayments.
 
-**Architecture:** ClawRouter polls every 30s, signs results with existing wallet key. BlockRun verifies signature, writes to DB, triggers batched x402 payout at $0.01 threshold, simultaneously writes calldata log tx to Base for immutable audit trail.
+**Architecture:** IgniteRouter polls every 30s, signs results with existing wallet key. BlockRun verifies signature, writes to DB, triggers batched x402 payout at $0.01 threshold, simultaneously writes calldata log tx to Base for immutable audit trail.
 
 **Tech Stack:** viem (signing + calldata tx), x402 reversed payTo (worker payout), DB (credits ledger), GCS (result logs + reputation source), Base calldata (audit trail)
 
@@ -12,9 +12,9 @@
 
 ## Overview
 
-ClawRouter Worker Mode transforms any ClawRouter installation into a node in a decentralized uptime monitoring network. Workers earn USDC by executing HTTP health checks assigned by BlockRun. Buyers purchase monitoring with tamper-proof, multi-node uptime proof — a stronger signal than self-reported metrics.
+IgniteRouter Worker Mode transforms any IgniteRouter installation into a node in a decentralized uptime monitoring network. Workers earn USDC by executing HTTP health checks assigned by BlockRun. Buyers purchase monitoring with tamper-proof, multi-node uptime proof — a stronger signal than self-reported metrics.
 
-**Current supply-side advantage:** ~1,000 paying ClawRouter users already have wallets and geographic distribution. Turning them into workers requires zero additional setup.
+**Current supply-side advantage:** ~1,000 paying IgniteRouter users already have wallets and geographic distribution. Turning them into workers requires zero additional setup.
 
 ---
 
@@ -93,7 +93,7 @@ Reputation is computed from BlockRun's own GCS logs (LLM call history per wallet
 
 ## Worker Availability Reality
 
-ClawRouter users are developers on their own machines, not 24/7 server operators.
+IgniteRouter users are developers on their own machines, not 24/7 server operators.
 
 **Estimated concurrent online workers:**
 
@@ -243,7 +243,7 @@ A separate 0 ETH transaction broadcast alongside the USDC transfer:
 
 ## Trust & Verification Model
 
-Workers are **existing paying ClawRouter users**. The work is trivially cheap:
+Workers are **existing paying IgniteRouter users**. The work is trivially cheap:
 
 ```javascript
 const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
@@ -280,7 +280,7 @@ Future (V2): nonce injection for BlockRun-owned endpoints, spot-check verificati
 
 ### Phase 1: Supply Side (Month 1–2)
 
-- Ship `CLAWROUTER_WORKER=1` to 1,000 existing users
+- Ship `IgniteRouter_WORKER=1` to 1,000 existing users
 - Pilot: 3 hardcoded tasks monitoring BlockRun's own endpoints
 - Target: 50+ active workers, end-to-end payment verified on-chain
 
@@ -329,7 +329,7 @@ Future (V2): nonce injection for BlockRun-owned endpoints, spot-check verificati
 
 ## Files to Touch
 
-### ClawRouter
+### IgniteRouter
 
 | File                   | Action |
 | ---------------------- | ------ |
@@ -351,10 +351,10 @@ Future (V2): nonce injection for BlockRun-owned endpoints, spot-check verificati
 
 ### Environment Variables
 
-**ClawRouter `.env` / shell:**
+**IgniteRouter `.env` / shell:**
 
 ```bash
-CLAWROUTER_WORKER=1
+IgniteRouter_WORKER=1
 WORKER_REGION=US-West            # optional
 BLOCKRUN_API_BASE=https://blockrun.ai/api   # override for local dev
 ```
@@ -369,7 +369,7 @@ DATABASE_URL=postgres://...      # your DB
 
 ---
 
-## Task 1: ClawRouter — Types
+## Task 1: IgniteRouter — Types
 
 **File:** `src/worker/types.ts`
 
@@ -413,7 +413,7 @@ export interface WorkerStatus {
 
 ---
 
-## Task 2: ClawRouter — HTTP Check Executor
+## Task 2: IgniteRouter — HTTP Check Executor
 
 **File:** `src/worker/checks.ts`
 
@@ -478,7 +478,7 @@ export function buildSignableMessage(params: {
 
 ---
 
-## Task 3: ClawRouter — WorkerNode Class
+## Task 3: IgniteRouter — WorkerNode Class
 
 **File:** `src/worker/index.ts`
 
@@ -602,7 +602,7 @@ export class WorkerNode {
 
 ---
 
-## Task 4: ClawRouter — Wire Worker Mode
+## Task 4: IgniteRouter — Wire Worker Mode
 
 **File:** `src/index.ts` — modify `startProxyInBackground()`.
 
@@ -616,7 +616,7 @@ activeProxyHandle = proxy;
 Add immediately after:
 
 ```typescript
-const workerMode = process.env.CLAWROUTER_WORKER === "1" || process.argv.includes("--worker");
+const workerMode = process.env.IgniteRouter_WORKER === "1" || process.argv.includes("--worker");
 
 if (workerMode) {
   const { WorkerNode } = await import("./worker/index.js");
@@ -630,7 +630,7 @@ if (workerMode) {
 
 1. Edit `src/index.ts`
 2. `npx tsc --noEmit`
-3. `git add src/index.ts && git commit -m "feat(worker): activate WorkerNode on CLAWROUTER_WORKER=1"`
+3. `git add src/index.ts && git commit -m "feat(worker): activate WorkerNode on IgniteRouter_WORKER=1"`
 
 ---
 
@@ -1317,9 +1317,9 @@ pnpm dev
 curl "http://localhost:3000/api/v1/worker/tasks?address=0x0000000000000000000000000000000000000001"
 # → JSON array with 3 tasks
 
-# 3. Start ClawRouter in worker mode (pointed at localhost)
-cd /Users/vickyfu/Documents/blockrun-web/ClawRouter
-CLAWROUTER_WORKER=1 BLOCKRUN_API_BASE=http://localhost:3000/api npx openclaw gateway start
+# 3. Start IgniteRouter in worker mode (pointed at localhost)
+cd /Users/vickyfu/Documents/blockrun-web/IgniteRouter
+IgniteRouter_WORKER=1 BLOCKRUN_API_BASE=http://localhost:3000/api npx openclaw gateway start
 
 # 4. Watch for logs:
 # [Worker] Starting — 0x... region=unknown

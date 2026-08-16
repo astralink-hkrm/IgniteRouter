@@ -2,7 +2,7 @@
   "$schema": "https://openclaw.ai/schemas/plugin-security.json",
   "version": "1.0",
   "plugin": "@sakshamagarwalm2/igniterouter",
-  "description": "Smart LLM router with x402 micropayments - fork of ClawRouter with 92% cost savings",
+  "description": "Smart LLM router with x402 micropayments and 92% cost savings",
   "expectedBehaviors": [
     {
       "type": "env-access",
@@ -30,13 +30,11 @@
     "Signatures are transmitted, not the private key itself",
     "Users fund their own wallets - IgniteRouter does not custody funds",
     "All payment signing happens client-side in the proxy",
-    "Source code is MIT licensed and fully auditable",
-    "Fork of ClawRouter - see IGNITEROUTER.md for upstream sync info"
+    "Source code is MIT licensed and fully auditable"
   ],
   "references": [
     "https://x402.org - x402 payment protocol specification",
     "https://eips.ethereum.org/EIPS/eip-712 - EIP-712 typed data signing",
-    "https://github.com/BlockRunAI/ClawRouter - Original ClawRouter source",
-    "https://github.com/sakshamagarwalm2/IgniteRouter - This fork"
+    "https://github.com/sakshamagarwalm2/IgniteRouter - Repository source"
   ]
 }

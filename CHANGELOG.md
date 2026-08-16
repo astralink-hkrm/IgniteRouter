@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to ClawRouter.
+All notable changes to IgniteRouter.
 
 ---
 
@@ -19,8 +19,8 @@ All notable changes to ClawRouter.
 
 ## v0.12.87 — Mar 30, 2026
 
-- **Predexon skill** — New vendor skill ships with ClawRouter: 39 prediction market endpoints (Polymarket, Kalshi, dFlow, Binance, cross-market matching, wallet analytics, smart money). OpenClaw agents now auto-invoke this skill when users ask about prediction markets, market odds, or smart money positioning.
-- **Partner proxy extended** — `/v1/pm/*` paths now route through ClawRouter's partner proxy (same as `/v1/x/*`), enabling automatic x402 payment for all Predexon endpoints via `localhost:8402`.
+- **Predexon skill** — New vendor skill ships with IgniteRouter: 39 prediction market endpoints (Polymarket, Kalshi, dFlow, Binance, cross-market matching, wallet analytics, smart money). OpenClaw agents now auto-invoke this skill when users ask about prediction markets, market odds, or smart money positioning.
+- **Partner proxy extended** — `/v1/pm/*` paths now route through IgniteRouter's partner proxy (same as `/v1/x/*`), enabling automatic x402 payment for all Predexon endpoints via `localhost:8402`.
 
 ---
 
@@ -58,7 +58,7 @@ All notable changes to ClawRouter.
 
 ### Fixed
 
-- **Skills not found by OpenClaw agents** — Auto-copies bundled skills (imagegen, x-api, clawrouter) to `~/.openclaw/workspace/skills/` on plugin registration. Fixes `ENOENT` errors when agents invoke `/imagegen`.
+- **Skills not found by OpenClaw agents** — Auto-copies bundled skills (imagegen, x-api, IgniteRouter) to `~/.openclaw/workspace/skills/` on plugin registration. Fixes `ENOENT` errors when agents invoke `/imagegen`.
 - **Internal `release` skill excluded** — No longer installed to user workspaces.
 - **Sync package-lock.json**
 
@@ -68,8 +68,8 @@ All notable changes to ClawRouter.
 
 ### Fixed
 
-- **Skills not found by OpenClaw agents** — Agents tried to read skill files (imagegen, x-api, etc.) from `~/.openclaw/workspace/skills/` but ClawRouter only bundled them inside the npm package. Now auto-copies all user-facing bundled skills into the workspace directory on plugin registration. Supports `OPENCLAW_PROFILE` for multi-profile setups. Only updates when content changes. Fixes `ENOENT: no such file or directory` errors when agents invoke `/imagegen`.
-- **Internal `release` skill excluded** — The release checklist skill is for ClawRouter maintainers only and is no longer installed to user workspaces.
+- **Skills not found by OpenClaw agents** — Agents tried to read skill files (imagegen, x-api, etc.) from `~/.openclaw/workspace/skills/` but IgniteRouter only bundled them inside the npm package. Now auto-copies all user-facing bundled skills into the workspace directory on plugin registration. Supports `OPENCLAW_PROFILE` for multi-profile setups. Only updates when content changes. Fixes `ENOENT: no such file or directory` errors when agents invoke `/imagegen`.
+- **Internal `release` skill excluded** — The release checklist skill is for IgniteRouter maintainers only and is no longer installed to user workspaces.
 - **Sync package-lock.json** — Lock file was stuck at v0.12.69, now matches package.json.
 
 ---
@@ -78,7 +78,7 @@ All notable changes to ClawRouter.
 
 ### Fixed
 
-- **Plugin crash on string model config** — ClawRouter crashed during OpenClaw plugin registration with `TypeError: Cannot create property 'primary' on string 'blockrun/auto'`. This happened when `agents.defaults.model` in the OpenClaw config was a plain string (e.g. `"blockrun/auto"`) instead of the expected object `{ primary: "blockrun/auto" }`. Now auto-converts string/array/non-object model values to the correct object form.
+- **Plugin crash on string model config** — IgniteRouter crashed during OpenClaw plugin registration with `TypeError: Cannot create property 'primary' on string 'blockrun/auto'`. This happened when `agents.defaults.model` in the OpenClaw config was a plain string (e.g. `"blockrun/auto"`) instead of the expected object `{ primary: "blockrun/auto" }`. Now auto-converts string/array/non-object model values to the correct object form.
 
 ---
 
@@ -101,7 +101,7 @@ All notable changes to ClawRouter.
 ## v0.12.25 — Mar 8, 2026
 
 - **Image generation docs** — new `docs/image-generation.md` with API reference, curl/TypeScript/Python/OpenAI SDK examples, model pricing table, and `/imagegen` command reference
-- **Comprehensive docs refresh** — architecture updated for dual-chain (Base + Solana), configuration updated with all env vars (`CLAWROUTER_SOLANA_RPC_URL`, `CLAWROUTER_WORKER`), troubleshooting updated for USDC-on-Solana funding, CHANGELOG backfilled for v0.11.14–v0.12.24
+- **Comprehensive docs refresh** — architecture updated for dual-chain (Base + Solana), configuration updated with all env vars (`IgniteRouter_SOLANA_RPC_URL`, `IgniteRouter_WORKER`), troubleshooting updated for USDC-on-Solana funding, CHANGELOG backfilled for v0.11.14–v0.12.24
 
 ---
 
@@ -114,7 +114,7 @@ All notable changes to ClawRouter.
 ## v0.12.14 — Mar 6, 2026
 
 - **`/chain` command** — persist payment chain selection (Base or Solana) across restarts via `/chain solana` or `/chain base`
-- **Update nudge improved** — now shows `npx @blockrun/clawrouter@latest` instead of `curl | bash`
+- **Update nudge improved** — now shows `npx @blockrun/IgniteRouter@latest` instead of `curl | bash`
 - **Zero balance cache fix** — funded wallets are detected immediately (zero balance never cached)
 - **`wallet recover` command** — restore `wallet.key` from BIP-39 mnemonic on a new machine
 - **Solana balance retry** — retries once on empty to handle flaky public RPC endpoints
@@ -131,7 +131,7 @@ All notable changes to ClawRouter.
 
 ## v0.12.11 — Mar 5, 2026
 
-- **Server-side update nudge** — 429 responses from BlockRun now surface update hints when running an outdated ClawRouter version
+- **Server-side update nudge** — 429 responses from BlockRun now surface update hints when running an outdated IgniteRouter version
 - **Body-read timeout** — prevents proxy from hanging on stalled upstream streams
 - **@solana/kit version fix** — pinned to `^5.0.0` to resolve cross-version signing bug causing `transaction_simulation_failed` (#74)
 - **`/stats clear` command** — reset usage statistics
@@ -208,8 +208,8 @@ Full Solana chain support. Pay with **USDC on Solana** (not SOL) alongside Base 
 
 ## v0.11.5 — Mar 1, 2026
 
-- **`clawrouter report` command** — daily/weekly/monthly usage reports via `npx @blockrun/clawrouter report`
-- **`clawrouter doctor` command** — AI diagnostics for troubleshooting
+- **`IgniteRouter report` command** — daily/weekly/monthly usage reports via `npx @blockrun/IgniteRouter report`
+- **`IgniteRouter doctor` command** — AI diagnostics for troubleshooting
 
 ## v0.11.4 — Mar 1, 2026
 

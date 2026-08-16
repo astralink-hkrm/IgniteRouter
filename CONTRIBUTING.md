@@ -1,10 +1,10 @@
-# Contributing to ClawRouter
+# Contributing to IgniteRouter
 
 ## Setup
 
 ```bash
-git clone https://github.com/BlockRunAI/ClawRouter
-cd ClawRouter
+git clone https://github.com/sakshamagarwalm2/IgniteRouter.git
+cd IgniteRouter
 npm install
 npm run build
 ```

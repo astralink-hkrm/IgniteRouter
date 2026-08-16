@@ -1,13 +1,11 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="IgniteRouter Banner" width="600">
-
 <h1>IgniteRouter</h1>
-<p><i>A fork of <a href="https://github.com/BlockRunAI/ClawRouter">ClawRouter</a> - The LLM router built for autonomous agents</i></p>
+<p><i>The LLM router built for autonomous agents</i></p>
 
 <p>Agents can't sign up for accounts. Agents can't enter credit cards.<br>
 Agents can only sign transactions.<br><br>
-<strong>ClawRouter is the only LLM router that lets agents operate independently.</strong></p>
+<strong>IgniteRouter is the only LLM router that lets agents operate independently.</strong></p>
 
 <br>
 
@@ -17,10 +15,10 @@ Agents can only sign transactions.<br><br>
 <img src="https://img.shields.io/badge/💰_x402_USDC-purple?style=for-the-badge" alt="x402 USDC">&nbsp;
 <img src="https://img.shields.io/badge/🔓_Open_Source-green?style=for-the-badge" alt="Open source">
 
-[![npm version](https://img.shields.io/npm/v/@blockrun/clawrouter.svg?style=flat-square&color=cb3837)](https://npmjs.com/package/@blockrun/clawrouter)
-[![npm downloads](https://img.shields.io/npm/dm/@blockrun/clawrouter.svg?style=flat-square&color=blue)](https://npmjs.com/package/@blockrun/clawrouter)
-[![GitHub stars](https://img.shields.io/github/stars/BlockRunAI/ClawRouter?style=flat-square)](https://github.com/BlockRunAI/ClawRouter)
-[![CI](https://img.shields.io/github/actions/workflow/status/BlockRunAI/ClawRouter/ci.yml?style=flat-square&label=CI)](https://github.com/BlockRunAI/ClawRouter/actions)
+[![npm version](https://img.shields.io/npm/v/@sakshamagarwalm2/igniterouter.svg?style=flat-square&color=cb3837)](https://npmjs.com/package/@sakshamagarwalm2/igniterouter)
+[![npm downloads](https://img.shields.io/npm/dm/@sakshamagarwalm2/igniterouter.svg?style=flat-square&color=blue)](https://npmjs.com/package/@sakshamagarwalm2/igniterouter)
+[![GitHub stars](https://img.shields.io/github/stars/sakshamagarwalm2/IgniteRouter?style=flat-square)](https://github.com/sakshamagarwalm2/IgniteRouter)
+[![CI](https://img.shields.io/github/actions/workflow/status/sakshamagarwalm2/IgniteRouter/ci.yml?style=flat-square&label=CI)](https://github.com/sakshamagarwalm2/IgniteRouter/actions)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
@@ -33,17 +31,17 @@ Agents can only sign transactions.<br><br>
 
 </div>
 
-> **IgniteRouter** is a fork of **ClawRouter** - an open-source smart LLM router that reduces AI API costs by up to 92%. See [IGNITEROUTER.md](IGNITEROUTER.md) for upstream sync instructions.
+> **IgniteRouter** is an open-source smart LLM router that reduces AI API costs by up to 92%.
 
 ---
 
-## Why ClawRouter exists
+## Why IgniteRouter exists
 
 Every other LLM router was built for **human developers** — create an account, get an API key, pick a model from a dashboard, pay with a credit card.
 
 **Agents can't do any of that.**
 
-ClawRouter is built for the agent-first world:
+IgniteRouter is built for the agent-first world:
 
 - **No accounts** — a wallet is generated locally, no signup
 - **No API keys** — your wallet signature IS authentication
@@ -57,7 +55,7 @@ This is the stack that lets agents operate autonomously: **x402 + USDC + local r
 
 ## How it compares
 
-|                  | OpenRouter        | LiteLLM          | Martian           | Portkey           | **ClawRouter**          |
+|                  | OpenRouter        | LiteLLM          | Martian           | Portkey           | **IgniteRouter**        |
 | ---------------- | ----------------- | ---------------- | ----------------- | ----------------- | ----------------------- |
 | **Models**       | 200+              | 100+             | Smart routing     | Gateway           | **55+**                 |
 | **Routing**      | Manual selection  | Manual selection | Smart (closed)    | Observability     | **Smart (open source)** |
@@ -77,10 +75,10 @@ This is the stack that lets agents operate autonomously: **x402 + USDC + local r
 
 ### Option A — OpenClaw Agent
 
-[OpenClaw](https://openclaw.ai) is an AI coding agent. If you're using it, ClawRouter installs as a plugin:
+[OpenClaw](https://openclaw.ai) is an AI coding agent. If you're using it, IgniteRouter installs as a plugin:
 
 ```bash
-curl -fsSL https://blockrun.ai/ClawRouter-update | bash
+openclaw plugins install @sakshamagarwalm2/igniterouter
 openclaw gateway restart
 ```
 
@@ -88,14 +86,12 @@ Done. Smart routing (`blockrun/auto`) is now your default model.
 
 ### Option B — Standalone (continue.dev, Cursor, VS Code, any OpenAI-compatible client)
 
-> **Using Claude Code?** Check out [BRCC](https://github.com/BlockRunAI/brcc) — it's purpose-built for Claude Code with the same smart routing and x402 payments.
-
-No OpenClaw required. ClawRouter runs as a local proxy on port 8402.
+No OpenClaw required. IgniteRouter runs as a local proxy on port 8402.
 
 **1. Start the proxy**
 
 ```bash
-npx @blockrun/clawrouter
+npx @sakshamagarwalm2/igniterouter
 ```
 
 **2. Fund your wallet**
@@ -110,7 +106,7 @@ Your wallet address is printed on first run. Send a few USDC on Base or Solana �
 
 ```yaml
 models:
-  - name: ClawRouter Auto
+  - name: IgniteRouter Auto
     provider: openai
     model: blockrun/auto
     apiBase: http://localhost:8402/v1/
@@ -123,7 +119,7 @@ models:
 
 To pin a specific model, replace `blockrun/auto` with any model from [blockrun.ai/models](https://blockrun.ai/models), e.g. `anthropic/claude-opus-4.6`, `xai/grok-4-0709`.
 
-Both `provider: openai` and `provider: clawrouter` work — just make sure `apiBase` ends with `/v1/`.
+Both `provider: openai` and `provider: igniterouter` work — just make sure `apiBase` ends with `/v1/`.
 
 <details>
 <summary>Legacy JSON format (<code>~/.continue/config.json</code>)</summary>
@@ -132,7 +128,7 @@ Both `provider: openai` and `provider: clawrouter` work — just make sure `apiB
 {
   "models": [
     {
-      "title": "ClawRouter Auto",
+      "title": "IgniteRouter Auto",
       "provider": "openai",
       "model": "blockrun/auto",
       "apiBase": "http://localhost:8402/v1/",
@@ -343,30 +339,6 @@ USDC stays in your wallet until spent — non-custodial. Price is visible in the
 /exclude clear       # Remove all exclusions
 ```
 
-**Fund your wallet:**
-
-- **Base (EVM):** Send USDC on Base to your EVM address
-- **Solana:** Send USDC on Solana to your Solana address
-- **Coinbase/CEX:** Withdraw USDC to either network
-- **Credit card:** Reach out to [@bc1max on Telegram](https://t.me/bc1max)
-
----
-
-## Screenshots
-
-<table>
-<tr>
-<td width="50%" align="center">
-<strong>Smart Routing in Action</strong><br><br>
-<img src="docs/clawrouter-savings.png" alt="ClawRouter savings" width="400">
-</td>
-<td width="50%" align="center">
-<strong>Telegram Integration</strong><br><br>
-<img src="assets/telegram-demo.png" alt="Telegram demo" width="400">
-</td>
-</tr>
-</table>
-
 ---
 
 ## Configuration
@@ -377,8 +349,8 @@ For basic usage, no configuration needed. For advanced options:
 | --------------------------- | ------------------------------------- | ----------------------- |
 | `BLOCKRUN_WALLET_KEY`       | auto-generated                        | Your wallet private key |
 | `BLOCKRUN_PROXY_PORT`       | `8402`                                | Local proxy port        |
-| `CLAWROUTER_DISABLED`       | `false`                               | Disable smart routing   |
-| `CLAWROUTER_SOLANA_RPC_URL` | `https://api.mainnet-beta.solana.com` | Solana RPC endpoint     |
+| `IGNITEROUTER_DISABLED`     | `false`                               | Disable smart routing   |
+| `IGNITEROUTER_SOLANA_RPC_URL` | `https://api.mainnet-beta.solana.com` | Solana RPC endpoint     |
 
 **Full reference:** [docs/configuration.md](docs/configuration.md)
 
@@ -404,13 +376,13 @@ Exclusions persist across restarts (`~/.openclaw/blockrun/exclude-models.json`).
 **When things go wrong, run the doctor:**
 
 ```bash
-npx @blockrun/clawrouter doctor
+npx @sakshamagarwalm2/igniterouter doctor
 ```
 
 This collects diagnostics and sends them to Claude Sonnet for AI-powered analysis:
 
 ```
-🩺 BlockRun Doctor v0.12.24
+🩺 IgniteRouter Doctor v0.12.24
 
 System
   ✓ OS: darwin arm64
@@ -433,14 +405,14 @@ The local proxy isn't running. Run `openclaw gateway restart` to fix.
 **Use Opus for complex issues:**
 
 ```bash
-npx @blockrun/clawrouter doctor opus
+npx @sakshamagarwalm2/igniterouter doctor opus
 ```
 
 **Ask a specific question:**
 
 ```bash
-npx @blockrun/clawrouter doctor "why is my request failing?"
-npx @blockrun/clawrouter doctor opus "深度分析我的配置"
+npx @sakshamagarwalm2/igniterouter doctor "why is my request failing?"
+npx @sakshamagarwalm2/igniterouter doctor opus "深度分析我的配置"
 ```
 
 **Cost:** Sonnet ~$0.003 (default) | Opus ~$0.01
@@ -450,8 +422,8 @@ npx @blockrun/clawrouter doctor opus "深度分析我的配置"
 ## Development
 
 ```bash
-git clone https://github.com/BlockRunAI/ClawRouter.git
-cd ClawRouter
+git clone https://github.com/sakshamagarwalm2/IgniteRouter.git
+cd IgniteRouter
 npm install
 npm run build
 npm test
@@ -459,57 +431,10 @@ npm test
 
 ---
 
-## Support
-
-| Channel               | Link                                                               |
-| --------------------- | ------------------------------------------------------------------ |
-| 📅 Schedule Demo      | [calendly.com/vickyfu9/30min](https://calendly.com/vickyfu9/30min) |
-| 💬 Community Telegram | [t.me/blockrunAI](https://t.me/blockrunAI)                         |
-| 🐦 X / Twitter        | [x.com/blockrunai](https://x.com/blockrunai)                       |
-| 📱 Founder Telegram   | [@bc1max](https://t.me/bc1max)                                     |
-| ✉️ Email              | vicky@blockrun.ai                                                  |
-
----
-
-## From the BlockRun Ecosystem
-
-<table>
-<tr>
-<td width="50%">
-
-### ⚡ ClawRouter
-
-**The LLM router built for autonomous agents**
-
-You're here. 55+ models, local smart routing, x402 USDC payments — the only stack that lets agents operate independently.
-
-`curl -fsSL https://blockrun.ai/ClawRouter-update | bash`
-
-</td>
-<td width="50%">
-
-### 🤖 [BRCC](https://github.com/BlockRunAI/brcc)
-
-**BlockRun for Claude Code**
-
-Run Claude Code with 50+ models, no rate limits, no Anthropic account, no phone verification. Pay per request with USDC — your wallet is your identity.
-
-`curl -fsSL https://blockrun.ai/brcc-install | bash`
-
-[![GitHub](https://img.shields.io/github/stars/BlockRunAI/brcc?style=flat-square)](https://github.com/BlockRunAI/brcc)
-
-</td>
-</tr>
-</table>
-
----
-
 ## More Resources
 
 | Resource                                               | Description              |
 | ------------------------------------------------------ | ------------------------ |
-| [Documentation](https://blockrun.ai/docs)              | Full docs                |
-| [Model Pricing](https://blockrun.ai/models)            | All models & prices      |
 | [Image Generation & Editing](docs/image-generation.md) | API examples, 5 models   |
 | [Routing Profiles](docs/routing-profiles.md)           | ECO/AUTO/PREMIUM details |
 | [Architecture](docs/architecture.md)                   | Technical deep dive      |
@@ -521,8 +446,8 @@ Run Claude Code with 50+ models, no rate limits, no Anthropic account, no phone 
 | Article                                                                                            | Topic                                                   |
 | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | [11 Free AI Models, Zero Cost](docs/11-free-ai-models-zero-cost-blockrun.md)                       | How BlockRun gives developers top-tier LLMs for nothing |
-| [ClawRouter Cuts LLM API Costs 500×](docs/clawrouter-cuts-llm-api-costs-500x.md)                   | Deep dive into cost savings                             |
-| [ClawRouter vs OpenRouter](docs/clawrouter-vs-openrouter-llm-routing-comparison.md)                | Head-to-head comparison                                 |
+| [IgniteRouter Cuts LLM API Costs 500×](docs/igniterouter-cuts-llm-api-costs-500x.md)                 | Deep dive into cost savings                             |
+| [IgniteRouter vs OpenRouter](docs/igniterouter-vs-openrouter-llm-routing-comparison.md)              | Head-to-head comparison                                 |
 | [Smart LLM Router: 14-Dimension Classifier](docs/smart-llm-router-14-dimension-classifier.md)      | How the routing engine works                            |
 | [LLM Router Benchmark: 46 Models, Sub-1ms](docs/llm-router-benchmark-46-models-sub-1ms-routing.md) | Performance benchmarks                                  |
 | [Anthropic Cost Savings](docs/anthropic-cost-savings.md)                                           | Reducing Claude API spend                               |
@@ -531,36 +456,36 @@ Run Claude Code with 50+ models, no rate limits, no Anthropic account, no phone 
 
 ## Frequently Asked Questions
 
-### What is ClawRouter?
+### What is IgniteRouter?
 
-ClawRouter is an open-source (MIT licensed) smart LLM router built for autonomous AI agents. It analyzes each request across 15 dimensions and routes to the cheapest capable model in under 1ms, entirely locally — no external API calls needed for routing decisions.
+IgniteRouter is an open-source (MIT licensed) smart LLM router built for autonomous AI agents. It analyzes each request across 15 dimensions and routes to the cheapest capable model in under 1ms, entirely locally — no external API calls needed for routing decisions.
 
-### How much can ClawRouter save on LLM costs?
+### How much can IgniteRouter save on LLM costs?
 
-ClawRouter's blended average cost is $2.05 per million tokens compared to $25/M for Claude Opus, representing 92% savings. Actual savings depend on your workload — simple queries are routed to free models ($0/request), while complex tasks get premium models.
+IgniteRouter's blended average cost is $2.05 per million tokens compared to $25/M for Claude Opus, representing 92% savings. Actual savings depend on your workload — simple queries are routed to free models ($0/request), while complex tasks get premium models.
 
-### How does ClawRouter compare to OpenRouter?
+### How does IgniteRouter compare to OpenRouter?
 
-ClawRouter is open source and runs locally. It uses wallet-based authentication (no API keys) and USDC per-request payments (no credit cards or subscriptions). OpenRouter requires an account, API key, and credit card. ClawRouter also features smart routing — it automatically picks the best model for each request, while OpenRouter requires manual model selection.
+IgniteRouter is open source and runs locally. It uses wallet-based authentication (no API keys) and USDC per-request payments (no credit cards or subscriptions). OpenRouter requires an account, API key, and credit card. IgniteRouter also features smart routing — it automatically picks the best model for each request, while OpenRouter requires manual model selection.
 
-### How does ClawRouter compare to LiteLLM?
+### How does IgniteRouter compare to LiteLLM?
 
-Both are open source and run locally. But ClawRouter adds smart routing (automatic model selection), wallet-based auth, and USDC payments. LiteLLM requires you to bring your own API keys and manually choose models.
+Both are open source and run locally. But IgniteRouter adds smart routing (automatic model selection), wallet-based auth, and USDC payments. LiteLLM requires you to bring your own API keys and manually choose models.
 
-### What agents does ClawRouter work with?
+### What agents does IgniteRouter work with?
 
-ClawRouter works with any tool that makes OpenAI-compatible API calls — point it at `http://localhost:8402`. This includes continue.dev, Cursor, VS Code extensions, ElizaOS, and custom agents. It also integrates as a plugin with [OpenClaw](https://openclaw.ai) (an AI coding agent), which enables additional features like slash commands and usage reports.
+IgniteRouter works with any tool that makes OpenAI-compatible API calls — point it at `http://localhost:8402`. This includes continue.dev, Cursor, VS Code extensions, ElizaOS, and custom agents. It also integrates as a plugin with [OpenClaw](https://openclaw.ai) (an AI coding agent), which enables additional features like slash commands and usage reports.
 
-### Is ClawRouter free?
+### Is IgniteRouter free?
 
-ClawRouter itself is free and MIT licensed. You pay only for the LLM API calls routed through it — and 11 models (DeepSeek V3.2, Nemotron Ultra 253B, Mistral Large 675B, Llama 4 Maverick, and more) are completely free. Use `/model free` for Nemotron Ultra 253B, or pick any free model by name.
+IgniteRouter itself is free and MIT licensed. You pay only for the LLM API calls routed through it — and 11 models (DeepSeek V3.2, Nemotron Ultra 253B, Mistral Large 675B, Llama 4 Maverick, and more) are completely free. Use `/model free` for Nemotron Ultra 253B, or pick any free model by name.
 
 ---
 
 <div align="center">
 
-**MIT License** · [BlockRun](https://blockrun.ai) — Agent-native AI infrastructure
+**MIT License** · IgniteRouter — Agent-native AI infrastructure
 
-⭐ If ClawRouter powers your agents, consider starring the repo!
+⭐ If IgniteRouter powers your agents, consider starring the repo!
 
 </div>

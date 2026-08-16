@@ -790,7 +790,7 @@ export const BLOCKRUN_MODELS: BlockRunModel[] = [
 
   // Free models (hosted by NVIDIA, billingMode: "free" on server)
   // IDs use "free/" prefix so users see them as free in the /model picker.
-  // ClawRouter maps free/xxx → nvidia/xxx before sending to BlockRun upstream.
+  // IgniteRouter maps free/xxx → nvidia/xxx before sending to BlockRun upstream.
   // toolCalling intentionally omitted: structured function calling unverified.
   {
     id: "free/gpt-oss-120b",

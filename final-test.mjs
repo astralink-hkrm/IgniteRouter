@@ -116,7 +116,7 @@ const baselineInputPrice = opus45Pricing?.inputPrice || 0;
 const baselineOutputPrice = opus45Pricing?.outputPrice || 0;
 
 console.log("╔════════════════════════════════════════════════════════════╗");
-console.log("║     ClawRouter Final Comprehensive Test - v0.8.20         ║");
+console.log("║     IgniteRouter Final Comprehensive Test - v0.8.20         ║");
 console.log("╠════════════════════════════════════════════════════════════╣");
 console.log(
   `║  Baseline: Claude Opus 4.5 ($${baselineInputPrice}/$${baselineOutputPrice} per M)                  ║`,

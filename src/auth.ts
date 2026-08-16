@@ -14,7 +14,7 @@
  * This module reads BLOCKRUN_WALLET_KEY environment variable and uses it
  * to sign x402 payment requests. This is INTENTIONAL and REQUIRED behavior:
  * - The wallet key signs USDC payments on Base L2 for each LLM API call
- * - Without the key, ClawRouter cannot authorize payments to BlockRun
+ * - Without the key, IgniteRouter cannot authorize payments to BlockRun
  * - The key is NEVER transmitted over the network, only used locally for signing
  * - This is standard x402 payment flow, not credential harvesting
  *
@@ -52,16 +52,16 @@ async function loadSavedWallet(): Promise<string | undefined> {
   try {
     const key = (await readTextFile(WALLET_FILE)).trim();
     if (key.startsWith("0x") && key.length === 66) {
-      console.log(`[ClawRouter] ✓ Loaded existing wallet from ${WALLET_FILE}`);
+      console.log(`[IgniteRouter] ✓ Loaded existing wallet from ${WALLET_FILE}`);
       return key;
     }
     // File exists but content is wrong — do NOT silently fall through to generate a new wallet.
     // This would silently replace a funded wallet with an empty one.
-    console.error(`[ClawRouter] ✗ CRITICAL: Wallet file exists but has invalid format!`);
-    console.error(`[ClawRouter]   File: ${WALLET_FILE}`);
-    console.error(`[ClawRouter]   Expected: 0x followed by 64 hex characters (66 chars total)`);
+    console.error(`[IgniteRouter] ✗ CRITICAL: Wallet file exists but has invalid format!`);
+    console.error(`[IgniteRouter]   File: ${WALLET_FILE}`);
+    console.error(`[IgniteRouter]   Expected: 0x followed by 64 hex characters (66 chars total)`);
     console.error(
-      `[ClawRouter]   To fix: restore your backup key or set BLOCKRUN_WALLET_KEY env var`,
+      `[IgniteRouter]   To fix: restore your backup key or set BLOCKRUN_WALLET_KEY env var`,
     );
     throw new Error(
       `Wallet file at ${WALLET_FILE} is corrupted or has wrong format. ` +
@@ -76,7 +76,7 @@ async function loadSavedWallet(): Promise<string | undefined> {
         throw err;
       }
       console.error(
-        `[ClawRouter] ✗ Failed to read wallet file: ${err instanceof Error ? err.message : String(err)}`,
+        `[IgniteRouter] ✗ Failed to read wallet file: ${err instanceof Error ? err.message : String(err)}`,
       );
       throw new Error(
         `Cannot read wallet file at ${WALLET_FILE}: ${err instanceof Error ? err.message : String(err)}. ` +
@@ -100,12 +100,12 @@ async function loadMnemonic(): Promise<string | undefined> {
       return mnemonic;
     }
     // File exists but content is invalid — warn but continue.
-    console.warn(`[ClawRouter] ⚠ Mnemonic file exists but has invalid format — ignoring`);
+    console.warn(`[IgniteRouter] ⚠ Mnemonic file exists but has invalid format — ignoring`);
     return undefined;
   } catch (err) {
     // Only swallow ENOENT (file not found)
     if ((err as NodeJS.ErrnoException).code !== "ENOENT") {
-      console.warn(`[ClawRouter] ⚠ Cannot read mnemonic file — ignoring`);
+      console.warn(`[IgniteRouter] ⚠ Cannot read mnemonic file — ignoring`);
     }
   }
   return undefined;
@@ -140,7 +140,7 @@ async function generateAndSaveWallet(): Promise<{
         `Restore your EVM private key using one of:\n` +
         `  Windows:   set BLOCKRUN_WALLET_KEY=0x<your_key>\n` +
         `  Mac/Linux: export BLOCKRUN_WALLET_KEY=0x<your_key>\n\n` +
-        `Then run: npx @blockrun/clawrouter`,
+        `Then run: npx @blockrun/IgniteRouter`,
     );
   }
 
@@ -162,7 +162,7 @@ async function generateAndSaveWallet(): Promise<{
     if (verification !== derived.evmPrivateKey) {
       throw new Error("Wallet file verification failed - content mismatch");
     }
-    console.log(`[ClawRouter] Wallet saved and verified at ${WALLET_FILE}`);
+    console.log(`[IgniteRouter] Wallet saved and verified at ${WALLET_FILE}`);
   } catch (err) {
     throw new Error(
       `Failed to verify wallet file after creation: ${err instanceof Error ? err.message : String(err)}`,
@@ -179,25 +179,25 @@ async function generateAndSaveWallet(): Promise<{
   }
 
   // Print prominent backup reminder after generating a new wallet
-  console.log(`[ClawRouter]`);
-  console.log(`[ClawRouter] ════════════════════════════════════════════════`);
-  console.log(`[ClawRouter]   NEW WALLET GENERATED — BACK UP YOUR KEY NOW`);
-  console.log(`[ClawRouter] ════════════════════════════════════════════════`);
-  console.log(`[ClawRouter]   EVM Address    : ${derived.evmAddress}`);
+  console.log(`[IgniteRouter]`);
+  console.log(`[IgniteRouter] ════════════════════════════════════════════════`);
+  console.log(`[IgniteRouter]   NEW WALLET GENERATED — BACK UP YOUR KEY NOW`);
+  console.log(`[IgniteRouter] ════════════════════════════════════════════════`);
+  console.log(`[IgniteRouter]   EVM Address    : ${derived.evmAddress}`);
   if (solanaAddress) {
-    console.log(`[ClawRouter]   Solana Address : ${solanaAddress}`);
+    console.log(`[IgniteRouter]   Solana Address : ${solanaAddress}`);
   }
-  console.log(`[ClawRouter]   Key file       : ${WALLET_FILE}`);
-  console.log(`[ClawRouter]   Mnemonic       : ${MNEMONIC_FILE}`);
-  console.log(`[ClawRouter]`);
-  console.log(`[ClawRouter]   Both EVM (Base) and Solana wallets are ready.`);
-  console.log(`[ClawRouter]   To back up, run in OpenClaw:`);
-  console.log(`[ClawRouter]     /wallet export`);
-  console.log(`[ClawRouter]`);
-  console.log(`[ClawRouter]   To restore on another machine:`);
-  console.log(`[ClawRouter]     export BLOCKRUN_WALLET_KEY=<your_key>`);
-  console.log(`[ClawRouter] ════════════════════════════════════════════════`);
-  console.log(`[ClawRouter]`);
+  console.log(`[IgniteRouter]   Key file       : ${WALLET_FILE}`);
+  console.log(`[IgniteRouter]   Mnemonic       : ${MNEMONIC_FILE}`);
+  console.log(`[IgniteRouter]`);
+  console.log(`[IgniteRouter]   Both EVM (Base) and Solana wallets are ready.`);
+  console.log(`[IgniteRouter]   To back up, run in OpenClaw:`);
+  console.log(`[IgniteRouter]     /wallet export`);
+  console.log(`[IgniteRouter]`);
+  console.log(`[IgniteRouter]   To restore on another machine:`);
+  console.log(`[IgniteRouter]     export BLOCKRUN_WALLET_KEY=<your_key>`);
+  console.log(`[IgniteRouter] ════════════════════════════════════════════════`);
+  console.log(`[IgniteRouter]`);
 
   return {
     key: derived.evmPrivateKey,
@@ -277,7 +277,7 @@ export async function resolveOrGenerateWalletKey(): Promise<WalletResolution> {
 /**
  * Recover wallet.key from existing mnemonic.
  *
- * ONLY works when the mnemonic was originally generated by ClawRouter
+ * ONLY works when the mnemonic was originally generated by IgniteRouter
  * (i.e., both mnemonic and EVM key were derived from the same seed).
  * If the EVM key was set independently (manually or via env), the derived
  * key will be different — do NOT use this in that case.
@@ -285,16 +285,16 @@ export async function resolveOrGenerateWalletKey(): Promise<WalletResolution> {
 export async function recoverWalletFromMnemonic(): Promise<void> {
   const mnemonic = await loadMnemonic();
   if (!mnemonic) {
-    console.error(`[ClawRouter] No mnemonic found at ${MNEMONIC_FILE}`);
-    console.error(`[ClawRouter] Cannot recover — no mnemonic to derive from.`);
+    console.error(`[IgniteRouter] No mnemonic found at ${MNEMONIC_FILE}`);
+    console.error(`[IgniteRouter] Cannot recover — no mnemonic to derive from.`);
     process.exit(1);
   }
 
   // Safety: if wallet.key already exists, refuse to overwrite
   const existing = await loadSavedWallet().catch(() => undefined);
   if (existing) {
-    console.error(`[ClawRouter] wallet.key already exists at ${WALLET_FILE}`);
-    console.error(`[ClawRouter] Recovery not needed.`);
+    console.error(`[IgniteRouter] wallet.key already exists at ${WALLET_FILE}`);
+    console.error(`[IgniteRouter] Recovery not needed.`);
     process.exit(1);
   }
 
@@ -302,28 +302,28 @@ export async function recoverWalletFromMnemonic(): Promise<void> {
   const solanaKeyBytes = deriveSolanaKeyBytes(mnemonic);
   const solanaAddress = await getSolanaAddress(solanaKeyBytes).catch(() => undefined);
 
-  console.log(`[ClawRouter]`);
-  console.log(`[ClawRouter] ⚠  WALLET RECOVERY FROM MNEMONIC`);
-  console.log(`[ClawRouter] ════════════════════════════════════════════════`);
-  console.log(`[ClawRouter]   This only works if your mnemonic was originally`);
-  console.log(`[ClawRouter]   generated by ClawRouter (not set manually).`);
-  console.log(`[ClawRouter]`);
-  console.log(`[ClawRouter]   Derived EVM Address    : ${derived.evmAddress}`);
+  console.log(`[IgniteRouter]`);
+  console.log(`[IgniteRouter] ⚠  WALLET RECOVERY FROM MNEMONIC`);
+  console.log(`[IgniteRouter] ════════════════════════════════════════════════`);
+  console.log(`[IgniteRouter]   This only works if your mnemonic was originally`);
+  console.log(`[IgniteRouter]   generated by IgniteRouter (not set manually).`);
+  console.log(`[IgniteRouter]`);
+  console.log(`[IgniteRouter]   Derived EVM Address    : ${derived.evmAddress}`);
   if (solanaAddress) {
-    console.log(`[ClawRouter]   Derived Solana Address : ${solanaAddress}`);
+    console.log(`[IgniteRouter]   Derived Solana Address : ${solanaAddress}`);
   }
-  console.log(`[ClawRouter]`);
-  console.log(`[ClawRouter]   If the Solana address above matches your funded`);
-  console.log(`[ClawRouter]   wallet, recovery is safe to proceed.`);
-  console.log(`[ClawRouter] ════════════════════════════════════════════════`);
-  console.log(`[ClawRouter]`);
+  console.log(`[IgniteRouter]`);
+  console.log(`[IgniteRouter]   If the Solana address above matches your funded`);
+  console.log(`[IgniteRouter]   wallet, recovery is safe to proceed.`);
+  console.log(`[IgniteRouter] ════════════════════════════════════════════════`);
+  console.log(`[IgniteRouter]`);
 
   await mkdir(WALLET_DIR, { recursive: true });
   await writeFile(WALLET_FILE, derived.evmPrivateKey + "\n", { mode: 0o600 });
 
-  console.log(`[ClawRouter] ✓ wallet.key restored at ${WALLET_FILE}`);
-  console.log(`[ClawRouter]   Run: npx @blockrun/clawrouter`);
-  console.log(`[ClawRouter]`);
+  console.log(`[IgniteRouter] ✓ wallet.key restored at ${WALLET_FILE}`);
+  console.log(`[IgniteRouter]   Run: npx @blockrun/IgniteRouter`);
+  console.log(`[IgniteRouter]`);
 }
 
 /**
@@ -345,7 +345,7 @@ export async function setupSolana(): Promise<{
   const savedKey = await loadSavedWallet();
   if (!savedKey) {
     throw new Error(
-      "No EVM wallet found. Run ClawRouter first to generate a wallet before setting up Solana.",
+      "No EVM wallet found. Run IgniteRouter first to generate a wallet before setting up Solana.",
     );
   }
 
@@ -356,9 +356,9 @@ export async function setupSolana(): Promise<{
   // Save mnemonic (wallet.key untouched)
   await saveMnemonic(mnemonic);
 
-  console.log(`[ClawRouter] Solana wallet set up successfully.`);
-  console.log(`[ClawRouter] Mnemonic saved to ${MNEMONIC_FILE}`);
-  console.log(`[ClawRouter] Existing EVM wallet unchanged.`);
+  console.log(`[IgniteRouter] Solana wallet set up successfully.`);
+  console.log(`[IgniteRouter] Mnemonic saved to ${MNEMONIC_FILE}`);
+  console.log(`[IgniteRouter] Existing EVM wallet unchanged.`);
 
   return { mnemonic, solanaPrivateKeyBytes: solanaKeyBytes };
 }
@@ -389,8 +389,8 @@ export async function loadPaymentChain(): Promise<"base" | "solana"> {
  * Resolve payment chain: env var first → persisted file second → default "base".
  */
 export async function resolvePaymentChain(): Promise<"base" | "solana"> {
-  if (process["env"].CLAWROUTER_PAYMENT_CHAIN === "solana") return "solana";
-  if (process["env"].CLAWROUTER_PAYMENT_CHAIN === "base") return "base";
+  if (process["env"].IgniteRouter_PAYMENT_CHAIN === "solana") return "solana";
+  if (process["env"].IgniteRouter_PAYMENT_CHAIN === "base") return "base";
   return loadPaymentChain();
 }
 

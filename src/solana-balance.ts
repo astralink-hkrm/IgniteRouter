@@ -35,7 +35,7 @@ export class SolanaBalanceMonitor {
 
   constructor(walletAddress: string, rpcUrl?: string) {
     this.walletAddress = walletAddress;
-    const url = rpcUrl || process["env"].CLAWROUTER_SOLANA_RPC_URL || SOLANA_DEFAULT_RPC;
+    const url = rpcUrl || process["env"].IgniteRouter_SOLANA_RPC_URL || SOLANA_DEFAULT_RPC;
     this.rpc = createSolanaRpc(url);
   }
 

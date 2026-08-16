@@ -1,12 +1,12 @@
 /**
- * @blockrun/clawrouter
+ * @sakshamagarwalm2/igniterouter
  *
  * Smart LLM router for OpenClaw — 55+ models, x402 micropayments, 78% cost savings.
  * Routes each request to the cheapest model that can handle it.
  *
  * Usage:
  *   # Install the plugin
- *   openclaw plugins install @blockrun/clawrouter
+ *   openclaw plugins install @sakshamagarwalm2/igniterouter
  *
  *   # Fund your wallet with USDC on Base (address printed on install)
  *
@@ -81,7 +81,7 @@ import { createStatsCommand } from "./commands/stats.js";
 import { createExcludeCommand } from "./commands/exclude.js";
 
 /**
- * Install ClawRouter skills into OpenClaw's workspace skills directory.
+ * Install IgniteRouter skills into OpenClaw's workspace skills directory.
  *
  * OpenClaw agents discover skills by scanning {workspaceDir}/skills/ for SKILL.md
  * files. While the plugin manifest (`openclaw.plugin.json`) exposes skills for
@@ -116,7 +116,7 @@ function installSkillsToWorkspace(logger: {
     mkdirSync(workspaceSkillsDir, { recursive: true });
 
     // Scan bundled skills: each subdirectory contains a SKILL.md
-    // Skip internal-only skills (release is for ClawRouter maintainers, not end users)
+    // Skip internal-only skills (release is for IgniteRouter maintainers, not end users)
     const INTERNAL_SKILLS = new Set(["release"]);
     const entries = readdirSync(bundledSkillsDir, { withFileTypes: true });
     let installed = 0;
@@ -624,7 +624,7 @@ async function startProxyInBackground(api: OpenClawPluginApi): Promise<void> {
     );
   }
 
-  api.logger.info(`ClawRouter ready — smart routing enabled`);
+  api.logger.info(`IgniteRouter ready — smart routing enabled`);
   api.logger.info(`Pricing: Simple ~$0.001 | Code ~$0.01 | Complex ~$0.05 | Free: $0`);
 
   // Non-blocking balance check AFTER proxy is ready (won't hang startup)
@@ -675,7 +675,7 @@ async function startProxyInBackground(api: OpenClawPluginApi): Promise<void> {
 // createExcludeCommand moved to src/commands/exclude.ts
 
 /**
- * /wallet command handler for ClawRouter.
+ * /wallet command handler for IgniteRouter.
  * - /wallet or /wallet status: Show wallet address, balance, usage, and key file location
  * - /wallet export: Show private key for backup (with security warning)
  */
@@ -897,7 +897,7 @@ function createWalletCommand(api?: OpenClawPluginApi): OpenClawPluginCommandDefi
 
       if (!walletKey || !address) {
         return {
-          text: `No ClawRouter wallet found.\n\nRun \`openclaw plugins install @blockrun/clawrouter\` to generate a wallet.`,
+          text: `No IgniteRouter wallet found.\n\nRun \`openclaw plugins install @blockrun/IgniteRouter\` to generate a wallet.`,
           isError: true,
         };
       }
@@ -905,7 +905,7 @@ function createWalletCommand(api?: OpenClawPluginApi): OpenClawPluginCommandDefi
       if (subcommand === "export") {
         // Export private key + mnemonic for backup
         const lines = [
-          "**ClawRouter Wallet Export**",
+          "**IgniteRouter Wallet Export**",
           "",
           "**SECURITY WARNING**: Your private key and mnemonic control your wallet funds.",
           "Never share these. Anyone with them can spend your USDC.",
@@ -1125,7 +1125,7 @@ function createWalletCommand(api?: OpenClawPluginApi): OpenClawPluginCommandDefi
 
       return {
         text: [
-          "**ClawRouter Wallet**",
+          "**IgniteRouter Wallet**",
           "",
           `**Payment Chain:** ${currentChain === "solana" ? "Solana" : "Base (EVM)"}`,
           "",
@@ -1154,18 +1154,18 @@ function createWalletCommand(api?: OpenClawPluginApi): OpenClawPluginCommandDefi
 }
 
 const plugin: OpenClawPluginDefinition = {
-  id: "clawrouter",
-  name: "ClawRouter",
+  id: "IgniteRouter",
+  name: "IgniteRouter",
   description: "Smart LLM router — 55+ models, x402 micropayments, 78% cost savings",
   version: VERSION,
 
   register(api: OpenClawPluginApi) {
-    // Check if ClawRouter is disabled via environment variable
-    // Usage: CLAWROUTER_DISABLED=true openclaw gateway start
+    // Check if IgniteRouter is disabled via environment variable
+    // Usage: IgniteRouter_DISABLED=true openclaw gateway start
     const isDisabled =
-      process["env"].CLAWROUTER_DISABLED === "true" || process["env"].CLAWROUTER_DISABLED === "1";
+      process["env"].IgniteRouter_DISABLED === "true" || process["env"].IgniteRouter_DISABLED === "1";
     if (isDisabled) {
-      api.logger.info("ClawRouter disabled (CLAWROUTER_DISABLED=true). Using default routing.");
+      api.logger.info("IgniteRouter disabled (IgniteRouter_DISABLED=true). Using default routing.");
       return;
     }
 
@@ -1179,8 +1179,8 @@ const plugin: OpenClawPluginDefinition = {
     // Provider/command/tool registration is idempotent — safe to repeat so the
     // LAST loaded plugin (the correct one) wins.  Only proxy startup must be guarded
     // to avoid EADDRINUSE.
-    const proc = process as NodeJS.Process & { __clawrouterProxyStarted?: boolean };
-    const proxyAlreadyStarted = !!proc.__clawrouterProxyStarted;
+    const proc = process as NodeJS.Process & { __IgniteRouterProxyStarted?: boolean };
+    const proxyAlreadyStarted = !!proc.__IgniteRouterProxyStarted;
 
     // Skip heavy initialization in completion mode — only completion script is needed
     // Logging to stdout during completion pollutes the script and causes zsh errors
@@ -1252,7 +1252,7 @@ const plugin: OpenClawPluginDefinition = {
           return { text: "No partner APIs available." };
         }
 
-        const lines = ["**Partner APIs** (paid via your ClawRouter wallet)", ""];
+        const lines = ["**Partner APIs** (paid via your IgniteRouter wallet)", ""];
 
         for (const svc of PARTNER_SERVICES) {
           lines.push(`**${svc.name}** (${svc.partner})`);
@@ -1291,7 +1291,7 @@ const plugin: OpenClawPluginDefinition = {
     // Register a service with stop() for cleanup on gateway shutdown
     // This prevents EADDRINUSE when the gateway restarts
     api.registerService({
-      id: "clawrouter-proxy",
+      id: "IgniteRouter-proxy",
       start: () => {
         // No-op: proxy is started below in non-blocking mode
       },
@@ -1358,7 +1358,7 @@ const plugin: OpenClawPluginDefinition = {
       api.logger.info("Proxy already started by earlier register() call — skipping");
       return;
     }
-    proc.__clawrouterProxyStarted = true;
+    proc.__IgniteRouterProxyStarted = true;
 
     const proxyPort = getProxyPort();
     const portProbe = import("node:net").then(
@@ -1422,7 +1422,7 @@ const plugin: OpenClawPluginDefinition = {
         }
 
         // Remove plugin entries (all case variants)
-        for (const key of ["clawrouter", "ClawRouter", "@blockrun/clawrouter"]) {
+        for (const key of ["IgniteRouter", "IgniteRouter", "@blockrun/IgniteRouter"]) {
           if (config.plugins?.entries?.[key]) delete config.plugins.entries[key];
           if (config.plugins?.installs?.[key]) delete config.plugins.installs[key];
         }
@@ -1430,7 +1430,7 @@ const plugin: OpenClawPluginDefinition = {
         // Remove from plugins.allow
         if (Array.isArray(config.plugins?.allow)) {
           config.plugins.allow = config.plugins.allow.filter(
-            (p: string) => p !== "clawrouter" && p !== "ClawRouter" && p !== "@blockrun/clawrouter",
+            (p: string) => p !== "IgniteRouter" && p !== "IgniteRouter" && p !== "@blockrun/IgniteRouter",
           );
         }
 
@@ -1450,7 +1450,7 @@ const plugin: OpenClawPluginDefinition = {
         const tmpPath = `${configPath}.tmp.${process.pid}`;
         writeFileSync(tmpPath, JSON.stringify(config, null, 2));
         renameSync(tmpPath, configPath);
-        api.logger.info("ClawRouter config cleaned up");
+        api.logger.info("IgniteRouter config cleaned up");
       }
     } catch (err) {
       api.logger.warn(`Config cleanup failed: ${err instanceof Error ? err.message : String(err)}`);
@@ -1479,7 +1479,7 @@ const plugin: OpenClawPluginDefinition = {
       // Best-effort cleanup
     }
 
-    api.logger.info("ClawRouter deactivated — restart gateway to complete uninstall");
+    api.logger.info("IgniteRouter deactivated — restart gateway to complete uninstall");
   },
 };
 

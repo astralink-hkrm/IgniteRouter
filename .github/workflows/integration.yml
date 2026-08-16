@@ -27,7 +27,7 @@ jobs:
           context: .
           file: test/integration/Dockerfile
           load: true
-          tags: clawrouter-integration:latest
+          tags: igniterouter-integration:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

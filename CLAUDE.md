@@ -1,4 +1,4 @@
-# ClawRouter
+# IgniteRouter
 
 Smart LLM router for autonomous agents. 55+ models. Wallet-based auth. USDC micropayments via x402.
 
@@ -55,5 +55,5 @@ src/
 - Lint with eslint, format with prettier
 - Node >= 20
 - MIT license
-- npm registry: `@blockrun/clawrouter`
+- npm registry: `@sakshamagarwalm2/igniterouter`
 - 15-dimension scoring for model routing (all local, < 1ms)

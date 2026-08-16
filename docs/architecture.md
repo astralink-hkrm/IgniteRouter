@@ -1,6 +1,6 @@
 # Architecture
 
-Technical deep-dive into ClawRouter's internals.
+Technical deep-dive into IgniteRouter's internals.
 
 ## Table of Contents
 
@@ -23,7 +23,7 @@ Technical deep-dive into ClawRouter's internals.
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                 ClawRouter Proxy (localhost)                │
+│                 IgniteRouter Proxy (localhost)                │
 │  ┌─────────────┐  ┌─────────────┐  ┌───────────────────┐   │
 │  │   Dedup     │→ │   Router    │→ │   x402 Payment    │   │
 │  │   Cache     │  │  (15-dim)   │  │  (USDC on Base    │   │
@@ -313,12 +313,12 @@ if (systemPrompt?.includes("json") || systemPrompt?.includes("yaml")) {
 
 ### x402 Protocol
 
-ClawRouter uses the [x402 protocol](https://x402.org) for micropayments. Both chains use the same flow; the signing step differs:
+IgniteRouter uses the [x402 protocol](https://x402.org) for micropayments. Both chains use the same flow; the signing step differs:
 
 ```
 ┌────────────┐     ┌──────────────────────┐     ┌────────────┐
 │   Client   │────▶│  BlockRun API        │────▶│  Provider  │
-│ (ClawRouter)     │  (Base: blockrun.ai  │     │ (OpenAI)   │
+│ (IgniteRouter)     │  (Base: blockrun.ai  │     │ (OpenAI)   │
 └────────────┘     │   Sol: sol.blockrun) │     └────────────┘
       │                  │
       │ 1. Request       │

@@ -5,8 +5,8 @@
  * Supports http://, https://, and socks5:// proxy URLs.
  *
  * Usage:
- *   BLOCKRUN_UPSTREAM_PROXY=socks5://127.0.0.1:1080 clawrouter start
- *   BLOCKRUN_UPSTREAM_PROXY=http://127.0.0.1:8080 clawrouter start
+ *   BLOCKRUN_UPSTREAM_PROXY=socks5://127.0.0.1:1080 IgniteRouter start
+ *   BLOCKRUN_UPSTREAM_PROXY=http://127.0.0.1:8080 IgniteRouter start
  */
 
 /**
@@ -23,7 +23,7 @@ export async function applyUpstreamProxy(proxyUrl?: string): Promise<string | un
   try {
     parsed = new URL(url);
   } catch {
-    console.warn(`[ClawRouter] Invalid BLOCKRUN_UPSTREAM_PROXY URL: ${url} — skipping proxy setup`);
+    console.warn(`[IgniteRouter] Invalid BLOCKRUN_UPSTREAM_PROXY URL: ${url} — skipping proxy setup`);
     return undefined;
   }
 
@@ -38,13 +38,13 @@ export async function applyUpstreamProxy(proxyUrl?: string): Promise<string | un
       setGlobalDispatcher(new ProxyAgent(url));
     } else {
       console.warn(
-        `[ClawRouter] Unsupported proxy scheme "${scheme}" in BLOCKRUN_UPSTREAM_PROXY — use http:// or socks5://`,
+        `[IgniteRouter] Unsupported proxy scheme "${scheme}" in BLOCKRUN_UPSTREAM_PROXY — use http:// or socks5://`,
       );
       return undefined;
     }
   } catch (err) {
     console.warn(
-      `[ClawRouter] Failed to configure upstream proxy "${url}": ${err instanceof Error ? err.message : err}`,
+      `[IgniteRouter] Failed to configure upstream proxy "${url}": ${err instanceof Error ? err.message : err}`,
     );
     return undefined;
   }

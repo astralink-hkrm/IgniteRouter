@@ -1,20 +1,20 @@
-# Using Subscriptions with ClawRouter Failover
+# Using Subscriptions with IgniteRouter Failover
 
-This guide explains how to use your existing LLM subscriptions (Claude Pro/Max, ChatGPT Plus, etc.) as primary providers, with ClawRouter x402 micropayments as automatic failover.
+This guide explains how to use your existing LLM subscriptions (Claude Pro/Max, ChatGPT Plus, etc.) as primary providers, with IgniteRouter x402 micropayments as automatic failover.
 
-## Why Not Built Into ClawRouter?
+## Why Not Built Into IgniteRouter?
 
-After careful consideration, we decided **not** to integrate subscription support directly into ClawRouter for several important reasons:
+After careful consideration, we decided **not** to integrate subscription support directly into IgniteRouter for several important reasons:
 
 ### 1. Terms of Service Compliance
 
 - Most subscription ToS (Claude Code, ChatGPT Plus) are designed for personal use
 - Using them through a proxy/API service may violate provider agreements
-- We want to keep ClawRouter compliant and low-risk for all users
+- We want to keep IgniteRouter compliant and low-risk for all users
 
 ### 2. Security & Privacy
 
-- Integrating subscriptions would require ClawRouter to access your credentials/sessions
+- Integrating subscriptions would require IgniteRouter to access your credentials/sessions
 - Spawning external processes (like Claude CLI) introduces security concerns
 - Better to keep authentication at the OpenClaw layer where you control it
 
@@ -22,13 +22,13 @@ After careful consideration, we decided **not** to integrate subscription suppor
 
 - Each subscription provider has different APIs, CLIs, and authentication methods
 - OpenClaw already has a robust provider system that handles this
-- Duplicating this in ClawRouter would increase complexity without added value
+- Duplicating this in IgniteRouter would increase complexity without added value
 
 ### 4. Better Architecture
 
 - OpenClaw's native failover mechanism is more flexible and powerful
 - Works with **any** provider (not just Claude)
-- Zero code changes needed in ClawRouter
+- Zero code changes needed in IgniteRouter
 - You maintain full control over your credentials
 
 ## How It Works
@@ -44,7 +44,7 @@ OpenClaw detects failure
     ↓
 Fallback Chain (try each in order)
     ↓
-ClawRouter (blockrun/auto)
+IgniteRouter (blockrun/auto)
     ↓
 Smart routing picks cheapest model
     ↓
@@ -58,17 +58,17 @@ Response returned to user
 - ✅ Automatic failover (no manual intervention)
 - ✅ Works with any subscription provider OpenClaw supports
 - ✅ Respects provider ToS (you configure authentication directly)
-- ✅ ClawRouter stays focused on cost optimization
+- ✅ IgniteRouter stays focused on cost optimization
 
 ## Setup Guide
 
 ### Prerequisites
 
-1. **OpenClaw Gateway installed** with ClawRouter plugin
+1. **OpenClaw Gateway installed** with IgniteRouter plugin
 
    ```bash
    npm install -g openclaw
-   openclaw plugins install @blockrun/clawrouter
+   openclaw plugins install @blockrun/IgniteRouter
    ```
 
 2. **Subscription configured in OpenClaw**
@@ -76,7 +76,7 @@ Response returned to user
    - For OpenAI: Set `OPENAI_API_KEY` environment variable
    - For others: See [OpenClaw provider docs](https://docs.openclaw.ai)
 
-3. **ClawRouter wallet funded** (for failover)
+3. **IgniteRouter wallet funded** (for failover)
    ```bash
    openclaw gateway logs | grep "Wallet:"
    # Send USDC to the displayed address on Base network
@@ -97,7 +97,7 @@ openclaw models set openai/gpt-4o
 openclaw models set <provider>/<model>
 ```
 
-#### Step 2: Add ClawRouter as Fallback
+#### Step 2: Add IgniteRouter as Fallback
 
 ```bash
 # Add blockrun/auto for smart routing (recommended)
@@ -126,7 +126,7 @@ Fallbacks:
 To verify failover works:
 
 1. **Temporarily exhaust your subscription quota** (or wait for rate limit)
-2. **Make a request** - OpenClaw should automatically failover to ClawRouter
+2. **Make a request** - OpenClaw should automatically failover to IgniteRouter
 3. **Check logs:**
    ```bash
    openclaw gateway logs | grep -i "fallback\|blockrun"
@@ -165,16 +165,16 @@ Edit `~/.openclaw/openclaw.json`:
 }
 ```
 
-#### Tier-Based Configuration (ClawRouter Smart Routing)
+#### Tier-Based Configuration (IgniteRouter Smart Routing)
 
-When using `blockrun/auto`, ClawRouter automatically classifies your request and picks the cheapest capable model:
+When using `blockrun/auto`, IgniteRouter automatically classifies your request and picks the cheapest capable model:
 
 - **SIMPLE** queries → Gemini 2.5 Flash, DeepSeek Chat (~$0.0001/req)
 - **MEDIUM** queries → GPT-4o-mini, Gemini Flash (~$0.001/req)
 - **COMPLEX** queries → Claude Sonnet, Gemini Pro (~$0.01/req)
 - **REASONING** queries → DeepSeek R1, o3-mini (~$0.05/req)
 
-Learn more: [ClawRouter Smart Routing](./smart-routing.md)
+Learn more: [IgniteRouter Smart Routing](./smart-routing.md)
 
 ## Monitoring & Troubleshooting
 
@@ -184,21 +184,21 @@ Learn more: [ClawRouter Smart Routing](./smart-routing.md)
 # Watch real-time logs
 openclaw gateway logs --follow | grep -i "fallback\|blockrun\|rate.limit\|quota"
 
-# Check ClawRouter proxy logs
-openclaw gateway logs | grep "ClawRouter"
+# Check IgniteRouter proxy logs
+openclaw gateway logs | grep "IgniteRouter"
 ```
 
 **Success indicators:**
 
 - ✅ "Rate limit reached" or "Quota exceeded" → primary failed
 - ✅ "Trying fallback: blockrun/auto" → failover triggered
-- ✅ "ClawRouter: Success with model" → failover succeeded
+- ✅ "IgniteRouter: Success with model" → failover succeeded
 
 ### Common Issues
 
 #### Issue: Failover never triggers
 
-**Symptoms:** Always uses primary, never switches to ClawRouter
+**Symptoms:** Always uses primary, never switches to IgniteRouter
 
 **Solutions:**
 
@@ -211,11 +211,11 @@ openclaw gateway logs | grep "ClawRouter"
 
 #### Issue: "Wallet empty" errors during failover
 
-**Symptoms:** Failover triggers but ClawRouter returns balance errors
+**Symptoms:** Failover triggers but IgniteRouter returns balance errors
 
 **Solutions:**
 
-1. Check ClawRouter wallet balance:
+1. Check IgniteRouter wallet balance:
    ```bash
    openclaw gateway logs | grep "Balance:"
    ```
@@ -224,7 +224,7 @@ openclaw gateway logs | grep "ClawRouter"
 
 #### Issue: Slow failover (high latency)
 
-**Symptoms:** 5-10 second delay when switching to ClawRouter
+**Symptoms:** 5-10 second delay when switching to IgniteRouter
 
 **Cause:** OpenClaw tries multiple auth profiles before failover
 
@@ -242,7 +242,7 @@ openclaw gateway logs | grep "ClawRouter"
 
 - 100 requests/day
 - 50% hit Claude subscription quota (rate limited)
-- 50% use ClawRouter failover
+- 50% use IgniteRouter failover
 
 **Without failover:**
 
@@ -251,7 +251,7 @@ openclaw gateway logs | grep "ClawRouter"
 **With failover:**
 
 - Claude subscription: $20/month (covers 50%)
-- ClawRouter x402: ~$5/month (50 requests via smart routing)
+- IgniteRouter x402: ~$5/month (50 requests via smart routing)
 - **Total: $25/month (50% savings)**
 
 ### When Does This Make Sense?
@@ -272,7 +272,7 @@ openclaw gateway logs | grep "ClawRouter"
 
 ### Q: Will this violate my subscription ToS?
 
-**A:** You configure the subscription directly in OpenClaw using your own credentials. ClawRouter only receives requests after your subscription fails. This is similar to using multiple API keys yourself.
+**A:** You configure the subscription directly in OpenClaw using your own credentials. IgniteRouter only receives requests after your subscription fails. This is similar to using multiple API keys yourself.
 
 However, each provider has different ToS. Check yours before proceeding:
 
@@ -297,24 +297,24 @@ See: [Claude Max API Proxy Guide](https://github.com/anthropics/claude-code/blob
 
 ### Q: How is this different from PR #15?
 
-**A:** PR #15 integrated Claude CLI directly into ClawRouter. Our approach:
+**A:** PR #15 integrated Claude CLI directly into IgniteRouter. Our approach:
 
 - ✅ Works with any provider (not just Claude)
 - ✅ Respects provider ToS (no proxy/wrapper)
 - ✅ Uses OpenClaw's native failover (more reliable)
-- ✅ Zero maintenance burden on ClawRouter
+- ✅ Zero maintenance burden on IgniteRouter
 
 ## Feedback & Support
 
 We'd love to hear your experience with subscription failover:
 
-- **GitHub Discussion:** [Share your setup](https://github.com/BlockRunAI/ClawRouter/discussions)
-- **Issues:** [Report problems](https://github.com/BlockRunAI/ClawRouter/issues)
+- **GitHub Discussion:** [Share your setup](https://github.com/BlockRunAI/IgniteRouter/discussions)
+- **Issues:** [Report problems](https://github.com/BlockRunAI/IgniteRouter/issues)
 - **Telegram:** [Join community](https://t.me/blockrunAI)
 
 ## Related Documentation
 
 - [OpenClaw Model Failover](https://docs.openclaw.ai/concepts/model-failover)
 - [OpenClaw Provider Configuration](https://docs.openclaw.ai/gateway/configuration)
-- [ClawRouter Smart Routing](./smart-routing.md)
-- [ClawRouter x402 Micropayments](./x402-payments.md)
+- [IgniteRouter Smart Routing](./smart-routing.md)
+- [IgniteRouter x402 Micropayments](./x402-payments.md)

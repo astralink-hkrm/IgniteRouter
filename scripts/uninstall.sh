@@ -23,7 +23,7 @@ kill_port_processes() {
   fi
 }
 
-echo "🦞 ClawRouter Uninstall"
+echo "🦞 IgniteRouter Uninstall"
 echo ""
 
 # 1. Stop proxy
@@ -32,7 +32,7 @@ kill_port_processes 8402
 
 # 2. Remove plugin files
 echo "→ Removing plugin files..."
-rm -rf ~/.openclaw/extensions/clawrouter
+rm -rf ~/.openclaw/extensions/IgniteRouter
 
 # 3. Clean openclaw.json
 echo "→ Cleaning openclaw.json..."
@@ -59,7 +59,7 @@ try {
   }
 
   // Remove plugin entries (check all case variants — OpenClaw stores PascalCase)
-  for (const key of ['clawrouter', 'ClawRouter', '@blockrun/clawrouter']) {
+  for (const key of ['IgniteRouter', 'IgniteRouter', '@blockrun/IgniteRouter']) {
     if (config.plugins?.entries?.[key]) {
       delete config.plugins.entries[key];
       console.log('  Removed plugins.entries.' + key);
@@ -76,7 +76,7 @@ try {
   if (Array.isArray(config.plugins?.allow)) {
     const before = config.plugins.allow.length;
     config.plugins.allow = config.plugins.allow.filter(
-      p => p !== 'clawrouter' && p !== 'ClawRouter' && p !== '@blockrun/clawrouter'
+      p => p !== 'IgniteRouter' && p !== 'IgniteRouter' && p !== '@blockrun/IgniteRouter'
     );
     if (config.plugins.allow.length !== before) {
       console.log('  Removed from plugins.allow');
@@ -155,7 +155,7 @@ echo "→ Cleaning models cache..."
 rm -f ~/.openclaw/agents/*/agent/models.json 2>/dev/null || true
 
 echo ""
-echo "✓ ClawRouter uninstalled"
+echo "✓ IgniteRouter uninstalled"
 echo ""
 echo "Restart OpenClaw to apply changes:"
 echo "  openclaw gateway restart"
