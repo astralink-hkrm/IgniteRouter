@@ -5,3 +5,5 @@ dist/
 .playwright-mcp/
 .worktrees/
 .gstack/
+vendors/
+
