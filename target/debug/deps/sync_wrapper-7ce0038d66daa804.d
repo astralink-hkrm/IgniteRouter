@@ -1,0 +1,5 @@
+D:\Recks\IgniteRouter\target\debug\deps\sync_wrapper-7ce0038d66daa804.d: C:\Users\SAKSHAM\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\sync_wrapper-1.0.2\src\lib.rs
+
+D:\Recks\IgniteRouter\target\debug\deps\libsync_wrapper-7ce0038d66daa804.rmeta: C:\Users\SAKSHAM\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\sync_wrapper-1.0.2\src\lib.rs
+
+C:\Users\SAKSHAM\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\sync_wrapper-1.0.2\src\lib.rs:
